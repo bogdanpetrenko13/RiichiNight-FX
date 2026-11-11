@@ -25,7 +25,7 @@ export function ErrorDialog({
   const [open, setOpen] = useState(false);
 
   const report = [
-    `Riichi Night ${__APP_VERSION__}`,
+    `Riichi Night FX ${__APP_VERSION__}`,
     new Date(error.at).toISOString(),
     navigator.userAgent,
     "",

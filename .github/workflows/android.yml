@@ -132,7 +132,7 @@ jobs:
           # Full-screen (immersive) activity: hides the status and navigation bars;
           # and the game's own vibration plugin (VibrationPlugin).
           cp resources/android/java/*.java \
-            android/app/src/main/java/com/bogdanpetrenko/riichinight/
+            android/app/src/main/java/com/bogdanpetrenko/riichinightfx/
 
       - id: gradle
         name: Build debug APK
@@ -199,9 +199,9 @@ jobs:
       - name: Name APK files
         run: |
           mkdir -p dist-apk
-          cp android/app/build/outputs/apk/debug/app-debug.apk dist-apk/RiichiNight-debug.apk
+          cp android/app/build/outputs/apk/debug/app-debug.apk dist-apk/RiichiNightFX-debug.apk
           if [ -f android/app/build/outputs/apk/release/app-release.apk ]; then
-            cp android/app/build/outputs/apk/release/app-release.apk dist-apk/RiichiNight.apk
+            cp android/app/build/outputs/apk/release/app-release.apk dist-apk/RiichiNightFX.apk
           fi
 
       - uses: actions/upload-artifact@v4
@@ -226,19 +226,19 @@ jobs:
           if [ "$tag" != "v$version" ]; then
             echo "::error::Tag $tag does not match package.json version $version"; exit 1
           fi
-          apk="dist-apk/RiichiNight-$tag.apk"
-          cp dist-apk/RiichiNight-debug.apk "$apk"
+          apk="dist-apk/RiichiNightFX-$tag.apk"
+          cp dist-apk/RiichiNightFX-debug.apk "$apk"
           notes="docs/releases/$tag.md"
           if gh release view "$tag" -R "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
             gh release upload "$tag" "$apk" --clobber -R "$GITHUB_REPOSITORY"
             # A release published with an empty title gets the commit message
             # as its name: give it the version name instead.
-            gh release edit "$tag" --title "Riichi Night $version" -R "$GITHUB_REPOSITORY"
+            gh release edit "$tag" --title "Riichi Night FX $version" -R "$GITHUB_REPOSITORY"
             if [ -f "$notes" ]; then gh release edit "$tag" --notes-file "$notes" -R "$GITHUB_REPOSITORY"; fi
           else
-            [ -f "$notes" ] || { echo "Riichi Night $version." > /tmp/notes.md; notes=/tmp/notes.md; }
+            [ -f "$notes" ] || { echo "Riichi Night FX $version." > /tmp/notes.md; notes=/tmp/notes.md; }
             gh release create "$tag" "$apk" -R "$GITHUB_REPOSITORY" \
-              --verify-tag --latest --title "Riichi Night $version" --notes-file "$notes"
+              --verify-tag --latest --title "Riichi Night FX $version" --notes-file "$notes"
           fi
 
       # Rolling pre-release with the latest debug APK from main, so it can be
@@ -250,11 +250,11 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh release delete dev-latest --yes --cleanup-tag -R "$GITHUB_REPOSITORY" || true
-          gh release create dev-latest dist-apk/RiichiNight-debug.apk -R "$GITHUB_REPOSITORY" \
+          gh release create dev-latest dist-apk/RiichiNightFX-debug.apk -R "$GITHUB_REPOSITORY" \
             --prerelease --target "$GITHUB_SHA" --title "Dev build (latest main)" \
             --notes "Debug APK from ${GITHUB_SHA::7}. Replaced on every push to main."
 
-  # Publishes the web build to https://bogdanpetrenko13.github.io/RiichiNight/.
+  # Publishes the web build to https://bogdanpetrenko13.github.io/RiichiNight-FX/.
   # Needs Settings -> Pages -> Source: "GitHub Actions" (set once by hand);
   # until then this job fails without failing the run.
   pages:

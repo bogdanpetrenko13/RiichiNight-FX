@@ -55,7 +55,7 @@ def test_plays_offline_after_the_first_visit(make_app):
     cached = page.evaluate(
         """async () => {
              const keys = await caches.keys();
-             const c = await caches.open(keys.find((k) => k.startsWith('riichinight-')));
+             const c = await caches.open(keys.find((k) => k.startsWith('riichinightfx-')));
              const names = ['./mortal/s42.f16.bin', './pyodide/python_stdlib.zip', './py/bridge.py'];
              return Promise.all(names.map(async (n) => Boolean(await c.match(n))));
            }"""

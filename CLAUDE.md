@@ -1,9 +1,46 @@
-# Riichi Night: notes for Claude
+# Riichi Night FX: notes for Claude
+
+**This is Riichi Night FX**, a separate copy of
+[Riichi Night](https://github.com/bogdanpetrenko13/RiichiNight) for visual
+work: light and materials, particles, richer animations (2D only: CSS, Web
+Animations, Canvas 2D; no 3D engine). The original stays as it is. Both apps
+install side by side: this one is app id `com.bogdanpetrenko.riichinightfx`,
+"Riichi Night FX", APK `RiichiNightFX-*.apk`, web build at
+`https://bogdanpetrenko13.github.io/RiichiNight-FX/`. Rules / engine / AI fixes
+made in the original can be brought over with
+`git remote add upstream https://github.com/bogdanpetrenko13/RiichiNight && git fetch upstream && git merge upstream/main`.
+The Mortal weights are still downloaded from the original repo's `mortal-s42`
+release (`scripts/mortal/ci_setup.sh`); leave that URL as it is.
+
+Plan (one Claude Code session per stage, the owner checks dev-latest on the
+phone between stages; every effect obeys `fxScale()` / `fxMs()` from
+`src/ui/tableFx.ts` and "reduce motion", CSS stays within WebView 105):
+
+0. FX layer `src/ui/fx/`: one canvas over the table, Canvas 2D, rAF only while
+   particles live; presets sparks, petals, gold, rays; e2e like
+   `test_table_fx.py`.
+1. Light and materials: felt texture (SVG feTurbulence), lamp light with
+   vignette, gloss on tiles (`Tile.module.css`); both table styles, all felt
+   colours, dark theme.
+2. Tiles in motion (`motion.ts`, `PlayerHand.tsx`): discard lands with a
+   bounce, the tile tilts during the swipe, the drawn tile slides in; the
+   click sound on landing.
+3. Riichi: `CallCutaway` dims the table, flash, speed lines; the stick drops
+   with a bounce; a quiet aura on the riichi player's band.
+4. Win by hand value (`RoundResult.tsx`): below mangan sparks, mangan /
+   haneman petals + rays, baiman / sanbaiman gold, yakuman a full-screen
+   scene with 役満. A tap skips.
+5. Living heroines (`Portrait.tsx`): breathing, a nudge on emotion change, a
+   flinch on deal-in, a glow in her colour on her win.
+6. FPS check on the phone, tests, screenshots, release notes.
+
+Original notes follow (paths and rules are the same).
+
 
 Offline riichi mahjong for Android: the player against three anime heroines.
 React 18 + TypeScript + Vite UI, the pyriichi rules engine in Pyodide inside a
 Web Worker, Capacitor 6 for the APK, GitHub Actions for builds. Repo:
-`bogdanpetrenko13/RiichiNight`, app id `com.bogdanpetrenko.riichinight`.
+`bogdanpetrenko13/RiichiNight-FX`, app id `com.bogdanpetrenko.riichinightfx`.
 The owner writes in Russian; reply in Russian.
 
 ## Hard rules
@@ -113,7 +150,7 @@ If the npm or PyPI registry is unreachable:
 
 Dependencies: CI installs exactly what `package-lock.json` pins (`npm ci`).
 After changing `package.json`, run the **Refresh package-lock.json** workflow
-(`gh api -X POST repos/bogdanpetrenko13/RiichiNight/actions/workflows/lockfile.yml/dispatches -f ref=main`),
+(`gh api -X POST repos/bogdanpetrenko13/RiichiNight-FX/actions/workflows/lockfile.yml/dispatches -f ref=main`),
 then `git pull` the commit it pushes; Claude's container cannot reach npm.
 
 Engine errors reach the player as `ErrorDialog` (retry / continue from the
@@ -129,16 +166,16 @@ CI (`.github/workflows/android.yml`):
 5. The debug APK, signed with the fixed key.
 
 Versions for players: a tag `vX.Y.Z` (pushed, or a release published on
-GitHub) makes CI publish `RiichiNight-vX.Y.Z.apk` in that release, with notes
+GitHub) makes CI publish `RiichiNightFX-vX.Y.Z.apk` in that release, with notes
 from `docs/releases/vX.Y.Z.md`; the tag must match `package.json`'s version
 (`docs/releases/README.md`). This session cannot create releases itself.
 
 On main, the APK is also published as the pre-release **dev-latest**:
 
 ```bash
-id=$(gh api repos/bogdanpetrenko13/RiichiNight/releases/tags/dev-latest -q '.assets[0].id')
+id=$(gh api repos/bogdanpetrenko13/RiichiNight-FX/releases/tags/dev-latest -q '.assets[0].id')
 curl -sSL -H "Authorization: Bearer $(gh auth token)" -H "Accept: application/octet-stream" \
-  -o RiichiNight-debug.apk https://api.github.com/repos/bogdanpetrenko13/RiichiNight/releases/assets/$id
+  -o RiichiNightFX-debug.apk https://api.github.com/repos/bogdanpetrenko13/RiichiNight-FX/releases/assets/$id
 ```
 
 Workflow artifacts can't be downloaded from Claude's cloud container (blob
@@ -150,7 +187,7 @@ storage is blocked); release assets can. GraphQL is blocked too, so use
 The owner's PC is reachable through the Claude desktop app when the session
 is linked to it:
 
-1. Copy the APK to `C:\Users\bogda\Downloads\RiichiNight\` (stage it under
+1. Copy the APK to `C:\Users\bogda\Downloads\RiichiNightFX\` (stage it under
    `/mnt/user-data/outputs/` first).
 2. In the emulator window (`MuMuNxDevice.exe`), open the toolbar menu
    `⋯` → «Другие инструменты» → «Установка APK».

@@ -1,7 +1,7 @@
 {
-  "name": "Riichi Night",
-  "short_name": "Riichi Night",
-  "description": "Офлайн риичи-маджонг против двенадцати героинь",
+  "name": "Riichi Night FX",
+  "short_name": "Riichi FX",
+  "description": "Riichi Night FX: офлайн риичи-маджонг против двенадцати героинь",
   "lang": "ru",
   "start_url": "./",
   "scope": "./",

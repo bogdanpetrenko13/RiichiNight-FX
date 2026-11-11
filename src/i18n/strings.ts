@@ -2,7 +2,7 @@ export type Lang = "en" | "ru";
 export const LANGS: Lang[] = ["en", "ru"];
 
 const en = {
-  appTitle: "Riichi Night",
+  appTitle: "Riichi Night FX",
   subtitle: "Riichi mahjong with rivals who don't like to lose",
   loadingRuntime: "Shuffling the tiles…",
   loadingEngine: "Building the wall…",
@@ -349,7 +349,7 @@ const en = {
 export type StringKey = keyof typeof en;
 
 const ru: Record<StringKey, string> = {
-  appTitle: "Riichi Night",
+  appTitle: "Riichi Night FX",
   subtitle: "Риичи-маджонг с соперницами, которые не любят проигрывать",
   loadingRuntime: "Перемешиваем тайлы…",
   loadingEngine: "Строим стену…",

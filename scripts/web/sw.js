@@ -8,7 +8,7 @@
 // has been closed: the running game never mixes files of two builds.
 const VERSION = "__VERSION__";
 const FILES = __FILES__;
-const CACHE = `riichinight-${VERSION}`;
+const CACHE = `riichinightfx-${VERSION}`;
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
@@ -26,7 +26,7 @@ self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches
       .keys()
-      .then((keys) => Promise.all(keys.filter((k) => k.startsWith("riichinight-") && k !== CACHE).map((k) => caches.delete(k))))
+      .then((keys) => Promise.all(keys.filter((k) => k.startsWith("riichinightfx-") && k !== CACHE).map((k) => caches.delete(k))))
       .then(() => self.clients.claim()),
   );
 });

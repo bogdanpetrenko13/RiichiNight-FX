@@ -1,6 +1,6 @@
 {
-  "appId": "com.bogdanpetrenko.riichinight",
-  "appName": "Riichi Night",
+  "appId": "com.bogdanpetrenko.riichinightfx",
+  "appName": "Riichi Night FX",
   "webDir": "dist",
   "android": {
     "allowMixedContent": false,

@@ -1,10 +1,13 @@
-# Riichi Night
+# Riichi Night FX
+
+> Отдельная версия [Riichi Night](https://github.com/bogdanpetrenko13/RiichiNight) с эффектами: свет и фактура стола, частицы, анимации риичи и побед. Ставится рядом с обычной версией, сохранения у каждой свои. Пока в работе: сейчас игра совпадает с оригиналом.
+
 
 Офлайн риичи-маджонг для Android: ты против трёх аниме-героинь. Двенадцать
 соперниц, от новичка до нейросети [Mortal](https://github.com/Equim-chan/Mortal).
 Работает без интернета, без рекламы и покупок.
 
-**[Скачать последнюю версию (APK)](https://github.com/bogdanpetrenko13/RiichiNight/releases/latest)**
+**[Скачать последнюю версию (APK)](https://github.com/bogdanpetrenko13/RiichiNight-FX/releases/latest)**
 
 <p>
   <img src="docs/screenshots/title.webp" width="24%" alt="Титульный экран: лестница из 12 соперниц">
@@ -15,7 +18,7 @@
 
 ## Установка
 
-1. Открой [страницу последнего релиза](https://github.com/bogdanpetrenko13/RiichiNight/releases/latest) и скачай `RiichiNight-vX.Y.Z.apk`.
+1. Открой [страницу последнего релиза](https://github.com/bogdanpetrenko13/RiichiNight-FX/releases/latest) и скачай `RiichiNightFX-vX.Y.Z.apk`.
 2. Открой файл на телефоне и разреши установку из этого источника.
 3. Новые версии ставятся поверх старых: сохранения и прогресс остаются.
 
@@ -23,7 +26,7 @@
 
 ### iPhone и iPad (веб-версия)
 
-1. Открой **https://bogdanpetrenko13.github.io/RiichiNight/** в Safari.
+1. Открой **https://bogdanpetrenko13.github.io/RiichiNight-FX/** в Safari.
 2. Нажми «Поделиться» → «На экран „Домой“» и запускай игру с иконки: так она открывается на весь экран, а сохранения не стираются.
 3. При первом запуске игра скачивает себя целиком (около 50 МБ), дальше работает без интернета. Новые версии подхватываются сами после перезапуска.
 
@@ -95,7 +98,7 @@ CI (`.github/workflows/android.yml`) гоняет тесты движка, ве�
 Pyodide, браузерные тесты и собирает APK, подписанный постоянным отладочным
 ключом (поэтому сборки ставятся поверх друг друга). Каждый коммит в `main`
 публикуется как пре-релиз **dev-latest**, а веб-версия из той же сборки выкладывается на GitHub Pages (`scripts/web/`: service worker кеширует всю игру для офлайна). Тег `vX.Y.Z` (он должен совпадать с
-версией в `package.json`) публикует `RiichiNight-vX.Y.Z.apk` с заметками из
+версией в `package.json`) публикует `RiichiNightFX-vX.Y.Z.apk` с заметками из
 `docs/releases/vX.Y.Z.md`.
 
 ### Где что лежит

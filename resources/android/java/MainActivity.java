@@ -1,4 +1,4 @@
-package com.bogdanpetrenko.riichinight;
+package com.bogdanpetrenko.riichinightfx;
 
 import android.os.Build;
 import android.os.Bundle;

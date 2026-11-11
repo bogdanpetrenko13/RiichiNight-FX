@@ -26,7 +26,7 @@ import { VibrationCheck } from "../components/VibrationCheck";
 import styles from "./SettingsScreen.module.css";
 
 /** The app is AGPL: whoever gets it can get the source (see NOTICE.md). */
-const SOURCE_URL = "https://github.com/bogdanpetrenko13/RiichiNight";
+const SOURCE_URL = "https://github.com/bogdanpetrenko13/RiichiNight-FX";
 const GAME_TOGGLES: (keyof Omit<GameRules, "gameLength">)[] = ["redFives", "openTanyao", "tobi", "agariYame", "kiriageMangan"];
 
 
