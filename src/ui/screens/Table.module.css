@@ -13,6 +13,16 @@
   background: var(--tbl-bg);
 }
 
+/* ---- effects canvas (src/ui/fx): sparks, petals, gold, rays over everything on the table ---- */
+.fx {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: var(--z-fx);
+  pointer-events: none;
+}
+
 /* ---- top bar: round only; counters live in the player band ------------------ */
 .topBar {
   grid-area: top;

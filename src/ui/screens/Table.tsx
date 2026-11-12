@@ -26,6 +26,7 @@ import type { ScoreFx } from "../components/BandScore";
 import { flyCopies, fxMs } from "../tableFx";
 import { sfx } from "../../game/sfx";
 import { RoundSplash } from "../components/RoundSplash";
+import { FxCanvas, fx, previewPreset } from "../fx";
 import styles from "./Table.module.css";
 
 interface TableProps {
@@ -220,6 +221,17 @@ export function Table({ game, onTitle, onAgain, onOpen }: TableProps) {
     gameRef.current.skipCutaway();
     if (resultKey) setReleased(resultKey);
   };
+
+  // A win bursts over the winner's band as the Ron / Tsumo banner comes in
+  // (sparks for now; the hand's value will choose the preset later).
+  // `?fx=petals|gold|rays` previews another preset.
+  const winCutawayId = cutaway && cutaway.kind !== "riichi" ? cutaway.id : null;
+  useEffect(() => {
+    if (winCutawayId === null) return;
+    const seat = gameRef.current.cutaway?.seat ?? 0;
+    const band = document.querySelector(`[data-score-seat="${seat}"]`)?.closest("section") ?? null;
+    fx.play(previewPreset() ?? "sparks", { at: band });
+  }, [winCutawayId]);
 
   // A rival comments when the player takes a long time.
   const waitingForHuman = view?.status === "human" && !menuOpen;
@@ -437,6 +449,7 @@ export function Table({ game, onTitle, onAgain, onOpen }: TableProps) {
           passThrough={Boolean(view?.prompt?.actions.some((a) => a !== "discard"))}
         />
       )}
+      <FxCanvas className={styles.fx} />
       {holding && !cutaway && <button className={styles.skipLayer} onClick={skipHold} aria-label={t("continue")} />}
 
       {showRound && (
