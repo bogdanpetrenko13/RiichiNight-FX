@@ -284,7 +284,7 @@ function Swatches<T extends string>({
 function LookPreview({ settings }: { settings: Settings }) {
   const { t } = useApp();
   return (
-    <div className={styles.look} data-style={settings.tableStyle} {...lookAttrs(settings)} aria-hidden>
+    <div className={styles.look} data-style={settings.tableStyle} data-fx={settings.tableFx} {...lookAttrs(settings)} aria-hidden>
       <div className={styles.lookBand} data-zone data-active>
         <span className={styles.lookWind} data-dealer>
           {t("wind_east")}

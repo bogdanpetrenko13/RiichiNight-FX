@@ -192,13 +192,52 @@
   --ease-out: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* ---- light and materials ----------------------------------------------------
+   One lamp hangs over the middle of the table: a warm pool of light around
+   the centre, the edges falling into shadow (--lamp, --shade), and the
+   surface has a grain (--grain-*: an SVG with feTurbulence, tiled; blended
+   with the surface as overlay, so the nap both lightens and darkens it).
+   The layers are stacked in --tbl-bg with --tbl-blend, so the table
+   (Table.module.css) and the look preview in Settings draw the same.
+   The felt gets a fine nap with soft mottling, the quiet table a faint paper
+   grain; the dark theme a deeper shadow. Table animations "off" (data-fx on
+   the table) draws the plain surface. The tiles' gloss is in Tile.module.css. */
+:root {
+  --grain-felt: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='360' height='360'><filter id='n' color-interpolation-filters='sRGB' x='0' y='0' width='100%25' height='100%25'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='3' stitchTiles='stitch'/><feColorMatrix values='1.6 0 0 0 -0.3  1.6 0 0 0 -0.3  1.6 0 0 0 -0.3  0 0 0 0 0.36'/></filter><filter id='m' color-interpolation-filters='sRGB' x='0' y='0' width='100%25' height='100%25'><feTurbulence type='fractalNoise' baseFrequency='0.011' numOctaves='3' seed='9' stitchTiles='stitch'/><feColorMatrix values='1.8 0 0 0 -0.4  1.8 0 0 0 -0.4  1.8 0 0 0 -0.4  0 0 0 0 0.34'/></filter><rect width='100%25' height='100%25' filter='url(%23m)'/><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  /* Wood: long fibres along the boards (the stripes in --tbl-base run at 92deg). */
+  --grain-wood: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='360' height='360'><filter id='w' color-interpolation-filters='sRGB' x='0' y='0' width='100%25' height='100%25'><feTurbulence type='fractalNoise' baseFrequency='0.4 0.006' numOctaves='3' seed='4' stitchTiles='stitch'/><feColorMatrix values='1.8 0 0 0 -0.4  1.8 0 0 0 -0.4  1.8 0 0 0 -0.4  0 0 0 0 0.32'/></filter><rect width='100%25' height='100%25' filter='url(%23w)'/></svg>");
+  --grain-paper: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n' color-interpolation-filters='sRGB' x='0' y='0' width='100%25' height='100%25'><feTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='2' seed='5' stitchTiles='stitch'/><feColorMatrix values='1.4 0 0 0 -0.2  1.4 0 0 0 -0.2  1.4 0 0 0 -0.2  0 0 0 0 0.22'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  --lamp: radial-gradient(85% 55% at 50% 36%, rgba(255, 236, 190, 0.09) 0%, rgba(255, 236, 190, 0.03) 45%, rgba(255, 236, 190, 0) 72%);
+  --shade: radial-gradient(130% 95% at 50% 42%, rgba(0, 0, 0, 0) 48%, rgba(0, 0, 0, 0.1) 78%, rgba(0, 0, 0, 0.22) 100%);
+}
+
+:root[data-theme="dark"] {
+  --lamp: radial-gradient(85% 55% at 50% 36%, rgba(255, 236, 190, 0.07) 0%, rgba(255, 236, 190, 0.02) 45%, rgba(255, 236, 190, 0) 72%);
+  --shade: radial-gradient(130% 95% at 50% 42%, rgba(0, 0, 0, 0) 42%, rgba(0, 0, 0, 0.2) 76%, rgba(0, 0, 0, 0.42) 100%);
+}
+
+/* The stack is put together on the element that carries data-style (the
+   table, the look preview): a var() is substituted where the property is
+   declared, so on :root it would take the root's layers, not the felt's. */
+[data-style] {
+  --tbl-bg: var(--lamp), var(--shade), var(--tbl-grain), var(--tbl-base);
+  --tbl-blend: normal, normal, overlay, normal;
+}
+
+/* Table animations off: the plain surface, nothing drawn over it. */
+[data-style][data-fx="off"] {
+  --tbl-bg: var(--tbl-base);
+  --tbl-blend: normal;
+}
+
 /* ---- table style (Settings → Table style) ---------------------------------
    "quiet": flat Riichi Trainer cards (defaults below).
    "felt":  one continuous green felt, bands split by thin lines, pill buttons.
    Set as data-style on the table; the felt overrides live on its zones
    (top bar, bands, dock) so overlays keep the app theme. */
 :root {
-  --tbl-bg: var(--bg);
+  --tbl-base: var(--bg);
+  --tbl-grain: var(--grain-paper);
   --band-bg: var(--surface);
   --band-border: 1px solid var(--border);
   --band-radius: var(--radius-m);
@@ -237,7 +276,11 @@
 }
 
 [data-style="felt"] {
-  --tbl-bg: radial-gradient(120% 80% at 50% 40%, #2b5a45 0%, #1a3d2f 55%, #0f241b 100%);
+  --tbl-base: radial-gradient(120% 80% at 50% 40%, #2b5a45 0%, #1a3d2f 55%, #0f241b 100%);
+  --tbl-grain: var(--grain-felt);
+  /* The lamp reads more on felt: a wider warm pool, a deeper edge. */
+  --lamp: radial-gradient(90% 60% at 50% 36%, rgba(255, 232, 180, 0.13) 0%, rgba(255, 232, 180, 0.05) 45%, rgba(255, 232, 180, 0) 72%);
+  --shade: radial-gradient(130% 95% at 50% 42%, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0.22) 74%, rgba(0, 0, 0, 0.5) 100%);
 }
 
 [data-style="felt"] [data-zone] {
@@ -283,20 +326,21 @@
    Emerald is the base felt above. --btn-call-text is the felt's deep tone (the text
    on the gold call buttons). */
 [data-style="felt"][data-felt="sapphire"] {
-  --tbl-bg: radial-gradient(120% 80% at 50% 40%, #2a4f7a 0%, #183354 55%, #0b1b30 100%);
+  --tbl-base: radial-gradient(120% 80% at 50% 40%, #2a4f7a 0%, #183354 55%, #0b1b30 100%);
 }
 [data-style="felt"][data-felt="burgundy"] {
-  --tbl-bg: radial-gradient(120% 80% at 50% 40%, #6e2a36 0%, #4a1a24 55%, #260b11 100%);
+  --tbl-base: radial-gradient(120% 80% at 50% 40%, #6e2a36 0%, #4a1a24 55%, #260b11 100%);
 }
 [data-style="felt"][data-felt="graphite"] {
-  --tbl-bg: radial-gradient(120% 80% at 50% 40%, #3b3f45 0%, #25282c 55%, #131416 100%);
+  --tbl-base: radial-gradient(120% 80% at 50% 40%, #3b3f45 0%, #25282c 55%, #131416 100%);
 }
 [data-style="felt"][data-felt="amethyst"] {
-  --tbl-bg: radial-gradient(120% 80% at 50% 40%, #43306a 0%, #2c1f48 55%, #170f27 100%);
+  --tbl-base: radial-gradient(120% 80% at 50% 40%, #43306a 0%, #2c1f48 55%, #170f27 100%);
 }
 [data-style="felt"][data-felt="wood"] {
-  --tbl-bg: repeating-linear-gradient(92deg, rgba(0, 0, 0, 0.06) 0 3px, rgba(255, 255, 255, 0.03) 3px 9px, rgba(0, 0, 0, 0.04) 9px 15px),
+  --tbl-base: repeating-linear-gradient(92deg, rgba(0, 0, 0, 0.06) 0 3px, rgba(255, 255, 255, 0.03) 3px 9px, rgba(0, 0, 0, 0.04) 9px 15px),
     radial-gradient(120% 80% at 50% 40%, #7a5434 0%, #55391f 55%, #2c1d10 100%);
+  --tbl-grain: var(--grain-wood);
 }
 [data-style="felt"][data-felt="sapphire"] [data-zone] { --btn-call-text: #183354; }
 [data-style="felt"][data-felt="burgundy"] [data-zone] { --btn-call-text: #4a1a24; }

@@ -304,6 +304,7 @@ export function Table({ game, onTitle, onAgain, onOpen }: TableProps) {
       className={styles.table}
       data-orientation={layout.orientation}
       data-style={settings.tableStyle}
+      data-fx={settings.tableFx}
       data-peek={peek.kind ?? undefined}
       data-reflow={reflow || undefined}
       data-sticks-taken={(resultKey !== null && sticksTaken === resultKey) || undefined}

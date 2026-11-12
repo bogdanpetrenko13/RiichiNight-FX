@@ -11,6 +11,7 @@
   overflow: hidden;
   padding: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left);
   background: var(--tbl-bg);
+  background-blend-mode: var(--tbl-blend);
 }
 
 /* ---- top bar: round only; counters live in the player band ------------------ */

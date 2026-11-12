@@ -70,6 +70,7 @@
   padding: var(--band-gap);
   border-radius: var(--radius-m);
   background: var(--tbl-bg);
+  background-blend-mode: var(--tbl-blend);
   overflow: hidden;
 }
 

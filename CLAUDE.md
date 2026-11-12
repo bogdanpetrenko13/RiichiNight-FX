@@ -23,9 +23,15 @@ because the owner found it cheap and useless. Prefer light, weight, timing,
 sound and pauses.
 
 0. ~~FX particle layer~~: dropped (see above).
-1. Light and materials: felt texture (SVG feTurbulence), lamp light with
-   vignette, gloss on tiles (`Tile.module.css`); both table styles, all felt
-   colours, dark theme.
+1. ~~Light and materials~~: done. Felt nap and mottling, wood fibres and a
+   paper grain for the quiet table (SVG feTurbulence data URIs in
+   `tokens.css`, blended as overlay), one lamp over the table centre with a
+   warm pool and a vignette (`--lamp` / `--shade`, deeper in the dark theme
+   and on felt), gloss on tile faces and backs (`--gloss` in
+   `Tile.module.css`, turned with sideways tiles, none on the flat set). The
+   stack is put together on the element with `data-style` (the table and the
+   Settings preview); «Анимации стола: выкл» (`data-fx="off"`) draws the
+   plain surface.
 2. Tiles in motion (`motion.ts`, `PlayerHand.tsx`): discard lands with a
    bounce, the tile tilts during the swipe, the drawn tile slides in; the
    click sound on landing.
