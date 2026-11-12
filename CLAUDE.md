@@ -2,8 +2,8 @@
 
 **This is Riichi Night FX**, a separate copy of
 [Riichi Night](https://github.com/bogdanpetrenko13/RiichiNight) for visual
-work: light and materials, particles, richer animations (2D only: CSS, Web
-Animations, Canvas 2D; no 3D engine). The original stays as it is. Both apps
+work: light and materials, weight and timing of the table's motion (2D only:
+CSS, Web Animations; no 3D engine). The original stays as it is. Both apps
 install side by side: this one is app id `com.bogdanpetrenko.riichinightfx`,
 "Riichi Night FX", APK `RiichiNightFX-*.apk`, web build at
 `https://bogdanpetrenko13.github.io/RiichiNight-FX/`. Rules / engine / AI fixes
@@ -16,22 +16,31 @@ Plan (one Claude Code session per stage, the owner checks dev-latest on the
 phone between stages; every effect obeys `fxScale()` / `fxMs()` from
 `src/ui/tableFx.ts` and "reduce motion", CSS stays within WebView 105):
 
-0. FX layer `src/ui/fx/`: one canvas over the table, Canvas 2D, rAF only while
-   particles live; presets sparks, petals, gold, rays; e2e like
-   `test_table_fx.py`.
+Direction: the table should feel like real objects, not be decorated. No
+particles, confetti, sparkles or other effects drawn on top of the table: a
+particle layer (sparks / petals / gold / rays on wins) was built and removed
+because the owner found it cheap and useless. Prefer light, weight, timing,
+sound and pauses.
+
+0. ~~FX particle layer~~: dropped (see above).
 1. Light and materials: felt texture (SVG feTurbulence), lamp light with
    vignette, gloss on tiles (`Tile.module.css`); both table styles, all felt
    colours, dark theme.
 2. Tiles in motion (`motion.ts`, `PlayerHand.tsx`): discard lands with a
    bounce, the tile tilts during the swipe, the drawn tile slides in; the
    click sound on landing.
-3. Riichi: `CallCutaway` dims the table, flash, speed lines; the stick drops
-   with a bounce; a quiet aura on the riichi player's band.
-4. Win by hand value (`RoundResult.tsx`): below mangan sparks, mangan /
-   haneman petals + rays, baiman / sanbaiman gold, yakuman a full-screen
-   scene with 役満. A tap skips.
+3. Riichi: `CallCutaway` dims the table for a beat; the stick drops with
+   weight and its click; a quiet ring on the riichi player's band (no
+   flashes or speed lines).
+4. Win by hand value (`RoundResult.tsx`), restrained, no particles: the more
+   valuable the hand, the slower and weightier the reveal (a held pause
+   before the limit name, the name set larger, the table light dimming
+   around the card, a deeper sound); yakuman gets the longest pause and
+   役満 in the call font. A tap skips.
 5. Living heroines (`Portrait.tsx`): breathing, a nudge on emotion change, a
-   flinch on deal-in, a glow in her colour on her win.
+   flinch on deal-in, a soft rim of her colour on her win (no glow effects
+   over the table).
+Mark each stage done here when it is finished.
 6. FPS check on the phone, tests, screenshots, release notes.
 
 Original notes follow (paths and rules are the same).
@@ -78,7 +87,6 @@ The owner writes in Russian; reply in Russian.
 | `src/ui/useLayout.ts` | Tile / band sizes from the viewport and the measured bands area (fixed sizes from `src/ui/metrics.ts`) |
 | `src/ui/components/Band.module.css` | Band layout; rivers in `River.module.css`, plaques and bubbles in `BandOverlay.module.css`, dead wall / counters / table centre in `TableInfo.module.css` |
 | `src/ui/motion.ts` | FLIP and discard flight animations; swipe up on a hand tile discards it (`PlayerHand.tsx`, the flight starts where it was let go) |
-| `src/ui/fx/` | Effects layer: one `<canvas>` over the table (`FxCanvas` in `Table.tsx`, `--z-fx`), Canvas 2D, rAF only while particles live (`layer.ts`); presets `sparks`, `petals`, `gold`, `rays` (`presets.ts`); `fx.play(preset, { at: element })` from anywhere, counts and lifetimes scale with `fxScale()` (nothing at 0); a win plays sparks over the winner's band, `?fx=<preset>` previews another; tests use `window.__rnFx` (`tests/e2e/test_fx_layer.py`) |
 | `src/ui/tableFx.ts` | Table animations (Settings → «Анимации стола»: full / short / off, `fxMs`): new dora turns over (`DeadWall.tsx`), riichi stick goes down / is swept to the winner, points change hands before the result card (`BandScore.tsx`, timing in `Table.tsx`), round splash (`RoundSplash.tsx`; the first hand rolls two dice for the first East, no sum shown); e2e in `tests/e2e/test_table_fx.py` |
 | `src/ui/components/RoundResult.tsx` | Result card: a win is laid out step by step (tiles, winning tile, yaku rows with your voice naming them via `src/game/yakuVoice.ts`, ura flip, points count up; a tap shows all), «Руки соперниц» from `result.hands` (`RivalHands.tsx`; the bridge sends rivals' hands only with the result). e2e `conftest.py` runs with table animations off unless a test turns them on |
 | `src/game/haptics.ts` | Vibration (Settings → «Вибрация» + «Проверка вибрации», way in `vibrationWay`): short buzz on your discard, longer on calls, double on your win, via `VibrationPlugin`; tests read `window.__rnHaptics` |

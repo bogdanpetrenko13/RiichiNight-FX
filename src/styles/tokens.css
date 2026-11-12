@@ -40,8 +40,6 @@
   /* Full-screen layers, bottom to top. */
   --z-skip-layer: 25;
   --z-cutaway: 30;
-  /* The effects canvas (src/ui/fx): over the table and the banner, under the result card. */
-  --z-fx: 35;
   --z-result: 40;
   --z-sheet: 45;
   --z-dialog: 60;
